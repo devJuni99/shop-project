@@ -30,14 +30,13 @@ export async function login() {
         .then((result) => {
             const user = result.user;
             console.log(user);
+            return user;
         })
         .catch(console.error);
 }
 
 export async function logout() {
     signOut(auth)
-        .then(() => {
-            console.log("로그아웃 처리");
-        })
+        .then(() => null)
         .catch(console.error);
 }

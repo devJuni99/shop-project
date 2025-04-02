@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FiShoppingBag } from "react-icons/fi";
 import { BsFillPencilFill } from "react-icons/bs";
 import { login, logout, onChangeAuth } from "../api/firebase";
+import User from "./User";
 
 export default function Navbar() {
     const [user, setUser] = useState(null);
@@ -11,7 +12,8 @@ export default function Navbar() {
         onChangeAuth((user) => setUser(user));
     }, []);
 
-    console.log("변경된 유저:", user);
+    console.log(user);
+
     return (
         <header className="flex justify-between border-b border-gray-300 p-2">
             <Link to="/" className="flex items-center text-4xl text-brand">
@@ -24,7 +26,7 @@ export default function Navbar() {
                 <Link to="/products/new" className="text-2xl">
                     <BsFillPencilFill />
                 </Link>
-
+                {user && <User user={user} />}
                 {!user && <button onClick={login}>Login</button>}
                 {user && <button onClick={logout}>Logout</button>}
             </nav>
