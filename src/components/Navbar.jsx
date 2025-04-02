@@ -12,7 +12,7 @@ export default function Navbar() {
         onChangeAuth((user) => setUser(user));
     }, []);
 
-    console.log(user);
+    console.log("로그인한 유저:", user);
 
     return (
         <header className="flex justify-between border-b border-gray-300 p-2">

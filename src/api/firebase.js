@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { getDatabase, ref, get } from "firebase/database";
 import {
     getAuth,
     signInWithPopup,
@@ -16,12 +17,13 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
-
+const database = getDatabase(app);
 const auth = getAuth();
 
 export function onChangeAuth(callback) {
-    onAuthStateChanged(auth, (user) => {
-        callback(user);
+    onAuthStateChanged(auth, async (user) => {
+        const updatedUser = user ? await isAdminUser(user) : user;
+        callback(updatedUser);
     });
 }
 
@@ -39,4 +41,20 @@ export async function logout() {
     signOut(auth)
         .then(() => null)
         .catch(console.error);
+}
+
+async function isAdminUser(user) {
+    return get(ref(database, `admins`))
+        .then((snapshot) => {
+            if (snapshot.exists()) {
+                const value = snapshot.val();
+                const isAdmin = value.includes(user.uid);
+                return { ...user, isAdmin };
+            } else {
+                console.log("No data available");
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
