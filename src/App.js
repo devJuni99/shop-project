@@ -1,13 +1,16 @@
-import { Outlet } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import { Outlet } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import { UserAuthContextProvider } from "./context/UserAuthContext";
 
 function App() {
-  return (
-    <>
-      <Navbar />
-      <Outlet />
-    </>
-  );
+    return (
+        <>
+            <UserAuthContextProvider>
+                <Navbar />
+                <Outlet />
+            </UserAuthContextProvider>
+        </>
+    );
 }
 
 export default App;
